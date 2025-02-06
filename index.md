@@ -227,7 +227,7 @@ import munit.FunSuite
 class EvaluatorSuite extends FunSuite {
   test("1 + 1 == 2") {
     val e = tInt(1) |+| tInt(1)
-    assert(evaluate(e) == 2)
+    assertEquals(eval(e), 2)
   }
 }
 ```
@@ -241,12 +241,12 @@ import munit.FunSuite
 class EvaluatorSuite extends FunSuite {
   test("1 - 1 == 0") {
     val e = tInt(1) |-| tInt(1)
-    assert(evaluate(e) == 0)
+    assertEquals(eval(e), 0)
   }
 
   test("1 - 2 == -1") {
     val e = tInt(1) |-| tInt(2)
-    assert(evaluate(e) == -1)
+    assertEquals(eval(e), -1)
   }
 }
 ```
@@ -260,17 +260,17 @@ import munit.FunSuite
 class EvaluatorSuite extends FunSuite {
   test("1 * 1 == 1") {
     val e = tInt(1) |*| tInt(1)
-    assert(evaluate(e) == 1)
+    assertEquals(eval(e), 1)
   }
 
   test("1 * 0 == 0") {
     val e = tInt(1) |*| tInt(0)
-    assert(evaluate(e) == 0)
+    assertEquals(eval(e), 0)
   }
 
   test("2 * 2 == 4") {
     val e = tInt(2) |*| tInt(2)
-    assert(evaluate(e) == 4)
+    assertEquals(eval(e), 4)
   }
 }
 ```
@@ -284,17 +284,17 @@ import munit.FunSuite
 class EvaluatorSuite extends FunSuite {
   test("0 / 1 == 0") {
     val e = tInt(0) |/| tInt(1)
-    assert(evaluate(e) == 0)
+    assertEquals(eval(e), 0)
   }
 
   test("2 / 1 == 2") {
     val e = tInt(2) |/| tInt(1)
-    assert(evaluate(e) == 2)
+    assertEquals(eval(e), 2)
   }
 
   test("6 / 2 == 3") {
     val e = tInt(6) |/| tInt(2)
-    assert(evaluate(e) == 3)
+    assertEquals(eval(e), 3)
   }
 }
 ```
@@ -309,7 +309,7 @@ class EvaluatorSuite extends FunSuite {
   test("(1 + (2 * 3) - 1) / 2 == 3") {
     // { (1 + (2 * 3)) - 1 } / 2
     val e = tInt(1) |+| (tInt(2) |*| tInt(3)) |-| tInt(1) |/| tInt(2)
-    assert(evaluate(e) == 3)
+    assertEquals(eval(e), 3)
   }
 }
 ```
