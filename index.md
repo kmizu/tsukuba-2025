@@ -606,7 +606,7 @@ def evalRec(e: Exp): Int = e match {
   ...
   case Assignment(name, expr) =>
     val v = evalRec(expr)
-    env(name) = v
+    varEnv(name) = v
     v
   case Ident(name) =>
     env.getOrElse(name, sys.error(s"Undefined identifier: $name"))
@@ -736,10 +736,10 @@ val ifExample = tIf(tInt(1) |<| tInt(2), tInt(3), tInt(4))
 def evalRec(e: Exp): Int = e match {
   ...
   case If(condition, thenClause, elseClause) =>
-    if (evalRec(condition, env) != 0)
-      evalRec(thenClause, env)
+    if (evalRec(condition) != 0)
+      evalRec(thenClause)
     else
-      evalRec(elseClause, env)
+      evalRec(elseClause)
   ...
 }
 ```
@@ -786,7 +786,7 @@ def evalRec(e: Exp): Int = e match {
   ...
   case Exp.While(condition, bodies) =>
     while (evalRec(condition) != 0) {
-      bodies.foreach(body => evalRec(body, env))
+      bodies.foreach(body => evalRec(body))
     }
     0
   ...
@@ -1305,10 +1305,17 @@ enum Type {
 ## 型検査のための関数 - リテラル
 
 - 整数リテラルは整数型
+- 以降、`typeOfRec`関数のみ掲載
 
 ```scala
-def typeOfRec(e: Exp): Type = e match {
-  case VInt(_) => TInt
+import scala.collection.mutable.{Map => MMap}
+def typeOf(
+  e: Exp, typeEnv: MMap[String, Type], funcenv: MMap[String  Func]
+): Type = {
+  def typeOfRec(e: Exp): Type = e match {
+    case VInt(_) => TInt
+  }
+  typeOfRec(e)
 }
 ```
 
