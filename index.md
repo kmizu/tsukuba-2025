@@ -727,10 +727,10 @@ val ifExample = tIf(tInt(1) |<| tInt(2), tInt(3), tInt(4))
 
 ### if式を追加する - eval()の実装
 
-1. `e.condition`を`eval()`する
+1. `condition`を`eval()`する
 2. `condition`が0でなければ3.、0なら4.を実行する
-3.  `e.thenClause` を `eval()` する
-4.  `e.elseClause` を `eval()` する
+3.  `thenClause` を `eval()` する
+4.  `elseClause` を `eval()` する
 
 ```scala
 def evalRec(e: Exp): Int = e match {
@@ -773,12 +773,12 @@ def tWhile(condition: Exp, bodies: Exp*): Exp =
 
 ### while式を追加する - eval()の実装
 
-1. `e.condition`を`eval()`する
+1. `condition`を`eval()`する
 2. 結果が0でなければ3.、0なら6.を実行する
-3. `e.bodies`の各要素`body`を`eval()`する
-4. `e.condition`を`eval()`する
+3. `bodies`の各要素`body`を`eval()`する
+4. `condition`を`eval()`する
 5. 結果が0でなければ3.、0なら6.を実行する
-6. `null`を返す
+6. `0`を返す
 
 
 ```scala
