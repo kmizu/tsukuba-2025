@@ -1382,7 +1382,7 @@ def typeOfRec(e: Exp): Type = e match {
     if (typeEnv.contains(name)) {
       val existingType = typeEnv(name)
       if (existingType != expType)
-        sys.error(s"Type error in assignment to '$name': variable already has type $existingType, but expression is $expType")
+        sys.error(s"Type mismatch: '$name': has type $existingType, but expression is $expType")
     } else {
       typeEnv(name) = expType  // implicit declaration
     }
@@ -1414,18 +1414,18 @@ def typeOfRec(e: Exp): Type = e match {
 
 - if式の条件式は真偽値型でthen節とelse節は同じ型
 - if式の結果はthen節とelse節の型
-
+:
 ```scala
 def typeOfRec(e: Exp): Type = e match {
   ...
   case If(condition, thenClause, elseClause) =>
     val condType = typeOfRec(condition)
     if (condType != TBool)
-      sys.error(s"Type error in if condition: expected Bool, got $condType")
+      sys.error(s"Type mismatch: expected Bool, got $condType")
     val thenType = typeOfRec(thenClause)
     val elseType = typeOfRec(elseClause)
     if (thenType != elseType)
-      sys.error(s"Type error in if branches: then branch has type $thenType but else branch has type $elseType")
+      sys.error(s"Type mismatch: expected $thenType, got $elseType")
     thenType
 }
 ```
@@ -1443,7 +1443,7 @@ def typeOfRec(e: Exp): Type = e match {
   case While(condition, bodies) =>
     val condType = typeOfRec(condition)
     if (condType != TBool)
-      sys.error(s"Type error in while condition: expected Bool, got $condType")
+      sys.error(s"Type mismatch: expected Bool, got $condType")
     bodies.foreach { expr =>
       typeOfRec(e)
     }
@@ -1461,14 +1461,14 @@ def typeOfRec(e: Exp): Type = e match {
   case Call(name, args) =>
     funcEnv.get(name) match {
       case Some(Func(_, params, retType, _)) =>
-        if (params.length != args.length) sys.error(s"Type error in function call '$name': expected ${params.length} arguments, got ${args.length}")
+        if (params.length != args.length) sys.error(s"Type mismatch: function $name' expected ${params.length} args, got ${args.length}" args)
         params.zip(args).foreach { case ((paramName, paramType), arg) =>
           val argType = typeOfRec(arg)
-          if (argType != paramType) sys.error(s"Type error in function call '$name': expected argument of type $paramType for parameter '$paramName', but got $argType")
+          if (argType != paramType) sys.error(s"Type mismh: function '$name' expected $paramType for '$paramName', but got $argType")
         }
         retType
       case None =>
-        sys.error(s"Undefined function in type checking: '$name'")
+        sys.error(s"Undefined function: '$name'")
     }
 }
 ```
